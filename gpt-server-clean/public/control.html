@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Control</title></head>
+<body>
+  <h2>Panel de Control</h2>
+  <textarea id="orden" rows="5" cols="60" placeholder="Orden GPT"></textarea>
+  <button onclick="guardar()">Guardar Orden</button>
+  <h3>Mensajes:</h3>
+  <div id="log" style="white-space: pre-wrap; background: #f0f0f0; padding: 10px;"></div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const log = document.getElementById('log');
+const socket = io();
+socket.emit('identify', 'control');
+
+socket.on('orden', o => document.getElementById('orden').value = o);
+socket.on('message', m => {
+  const linea = `[${m.role}] ${m.content}\n`;
+  log.textContent += linea;
+});
+
+function guardar() {
+  fetch('/orden', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ orden: document.getElementById('orden').value })
+  });
+}
+</script>
+</body></html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Decorador</title></head>
+<body>
+<div id="chat" style="max-width:600px;margin:auto;">
+  <div id="msgs" style="min-height:300px;padding:10px;background:#eef"></div>
+  <input id="in" style="width:80%" placeholder="Mensaje...">
+  <button onclick="send()">Enviar</button>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const socket = io();
+const msgs = document.getElementById('msgs');
+socket.emit('identify', 'decorador');
+socket.on('message', m => {
+  const d = document.createElement('div');
+  d.textContent = `[${m.role}] ${m.content}`;
+  msgs.appendChild(d);
+});
+function send() {
+  const t = document.getElementById('in');
+  socket.emit('message', { role: 'decorador', content: t.value });
+  t.value = '';
+}
+</script>
+</body></html>

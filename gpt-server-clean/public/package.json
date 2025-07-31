@@ -1,0 +1,14 @@
+{
+  "name": "gpt-node-server",
+  "version": "1.0.0",
+  "description": "Servidor Node.js para app GPT",
+  "main": "server.js",
+  "bin": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "axios": "^1.6.0"
+  }
+}
