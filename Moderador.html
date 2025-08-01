@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Moderador</title>
+  <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+</head>
+<body>
+  <h2>Moderador</h2>
+  <div id="chat"></div>
+  <input type="text" id="msg">
+  <button onclick="enviar()">Enviar</button>
+
+  <script>
+    const pusher = new Pusher('TU_APP_KEY', { cluster: 'TU_CLUSTER' });
+    const channel = pusher.subscribe('canal-chat');
+    channel.bind('from-client', function(data) {
+      const div = document.getElementById('chat');
+      div.innerHTML += `<p><b>Cliente:</b> ${data.message}</p>`;
+    });
+
+    function enviar() {
+      fetch('/api/moderador', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: document.getElementById('msg').value })
+      });
+    }
+  </script>
+</body>
+</html>
